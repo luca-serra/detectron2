@@ -56,13 +56,13 @@ class ROIAlign(nn.Module):
         if input.is_quantized:
             input = input.dequantize()
         return roi_align(
-            input,
-            rois.to(dtype=input.dtype),
+            input.half().double(),
+            rois.half().double(),
             self.output_size,
             self.spatial_scale,
             self.sampling_ratio,
             self.aligned,
-        )
+        ).to(dtype=input.dtype)
 
     def __repr__(self):
         tmpstr = self.__class__.__name__ + "("
